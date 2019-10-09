@@ -17,4 +17,14 @@ export class EmployeeService {
        map(res => res.json())
      );
    }
+
+  addFilter(newfilter) {
+    var headers = new Headers();
+    headers.append('Content-Type', 'application/json');
+    return this.http.post('http://localhost:5000/api/employee', JSON.stringify(newfilter), { headers: headers })
+      .pipe(
+        map(res => res.json())
+      );
+
+  }
 }

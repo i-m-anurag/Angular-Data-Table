@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmployeeService } from '../../service/employee.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { FormControl } from '@angular/forms';
 import { DataSource } from '@angular/cdk/collections'
 export interface PeriodicElement {
-  id: number;
-  name: string;
-  dept: string;
-  salary: number;
+  payment_id: number;
+  customer_id: number;
+  staff_id: number;
+  rental_id: number;
+  amount:number;
+  payment_date:string;
+  last_update:string;
 }
 
 @Component({
@@ -17,33 +22,78 @@ export interface PeriodicElement {
 export class IndexComponent implements OnInit {
   // dataSource:DataTableData;
  // dataSource:DataSource;
+  dataSource;
+  showSpinner = false;
+  title:string;
+  status:string;
+  id = new FormControl('');
+  Query:{};
+  f=false;
    
 
-  displayedColumns: string[] = ['id', 'name', 'dept', 'salary'];
-  // dataSource = ELEMENT_DATA;
-  applyFilter(filterValue: string) {
-    // this.dataSource.filter = filterValue.trim().toLowerCase();
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
-   // this.dataSource.filter = filterValue;
-   
-  }
-
+  displayedColumns: string[] = ['payment_id', 'customer_id', 'staff_id', 'rental_id','amount','payment_date','last_update'];
+ 
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   constructor(private employeeService:EmployeeService) { 
  
   }
 
-  ngOnInit() {
-    // this.employeeService.getEmployee().subscribe(
-    //   emp=>{
-    //   //  console.log(emp);
-    //     const ELEMENT_DATA: PeriodicElement[] = emp;
-    //     this.dataSource = new MatTableDataSource(ELEMENT_DATA) ;
-    //     console.log(this.dataSource);
-    //   }
-    // );
+  addFilter(event) {
+    event.preventDefault();
+    //console.log(this.title);
+    var newTask = {
+      title: this.title,
+     // isDone: false,
+      status:this.status
+    }
+    console.log(newTask);
+  /* if(!newTask.status)
+   {
+     newTask.status='';
+     //console.log(newTask);
+     this.Query = { q: ''}
+   }
+   else{
+     newTask.status = '1';
+     this.Query = { q: "WHERE payment_id = " + newTask.status }
+    // console.log(newTask);
+   }
+     
+     console.log(this.Query);
+ 
+    this.employeeService.addFilter(this.Query)
+      .subscribe(emp => {
+        // console.log(emp);
+        const ELEMENT_DATA: PeriodicElement[] = emp;
+        this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+        // console.log(this.dataSource);
+        this.dataSource.paginator = this.paginator;
+        this.showSpinner = false;
+      }
 
-    // this.dataSource.filterPredicate = function (data, filter: string): boolean {
+      );*/
+  }
+
+
+ 
+
+  ngOnInit() {
+    this.showSpinner=true;
+   
+     this.employeeService.getEmployee().subscribe(
+       emp=>{
+        // console.log(emp);
+         const ELEMENT_DATA: PeriodicElement[] = emp;
+         this.dataSource = new MatTableDataSource(ELEMENT_DATA) ;
+        // console.log(this.dataSource);
+         this.dataSource.paginator = this.paginator;
+         this.showSpinner=false;
+       }
+     );
+      
+     
+
+   //  this.dataSource.filterPredicate = function (data, filter: string): boolean {
     //   return data.name.toLowerCase().includes(filter) === filter;
     // };
     

@@ -8,12 +8,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IndexComponent } from './components/index/index.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HomeComponent } from './components/home/home.component';
+import { CheckboxComponent } from './components/checkbox/checkbox.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     IndexComponent,
-    HomeComponent
+    HomeComponent,
+    CheckboxComponent
   ],
   imports: [
     BrowserModule,
